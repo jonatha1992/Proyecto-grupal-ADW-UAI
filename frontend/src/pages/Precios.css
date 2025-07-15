@@ -1,0 +1,278 @@
+.precios-page {
+  min-height: 100vh;
+  background-color: #f7fafc;
+  padding: 40px 20px;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  color: #2d3748;
+  margin-bottom: 10px;
+}
+
+.page-header p {
+  font-size: 1.1rem;
+  color: #718096;
+}
+
+.precios-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto 60px;
+}
+
+.precio-card {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-top: 4px solid #4299e1;
+}
+
+.precio-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+.precio-header {
+  text-align: center;
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.precio-header h3 {
+  color: #2d3748;
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.precio {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 5px;
+}
+
+.moneda {
+  font-size: 1.2rem;
+  color: #4299e1;
+  font-weight: 600;
+}
+
+.monto {
+  font-size: 2.2rem;
+  color: #2d3748;
+  font-weight: 700;
+}
+
+.precio-details {
+  margin-bottom: 25px;
+}
+
+.detalle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  color: #4a5568;
+  font-weight: 500;
+}
+
+.detalle .icon {
+  font-size: 1.1rem;
+}
+
+.descripcion {
+  color: #718096;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.precio-actions {
+  text-align: center;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+}
+
+.btn-primary {
+  background-color: #4299e1;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #3182ce;
+  transform: translateY(-2px);
+}
+
+.btn-large {
+  padding: 16px 32px;
+  font-size: 1.1rem;
+}
+
+.info-adicional {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.info-section {
+  margin-bottom: 50px;
+}
+
+.info-section h2 {
+  text-align: center;
+  font-size: 2rem;
+  color: #2d3748;
+  margin-bottom: 40px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.info-item {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+}
+
+.info-item:hover {
+  transform: translateY(-3px);
+}
+
+.info-icon {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+.info-item h3 {
+  color: #2d3748;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.info-item p {
+  color: #718096;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.promociones-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 50px 30px;
+  border-radius: 16px;
+  margin-bottom: 50px;
+}
+
+.promociones-section h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 40px;
+  color: white;
+}
+
+.promociones {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.promocion {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+
+.promocion h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.promocion p {
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.5;
+}
+
+.cta-section {
+  text-align: center;
+  background: white;
+  padding: 50px 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.cta-section h2 {
+  color: #2d3748;
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+.cta-section p {
+  color: #718096;
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 768px) {
+  .precios-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .precio-card {
+    padding: 25px 20px;
+  }
+  
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .promociones {
+    grid-template-columns: 1fr;
+  }
+  
+  .page-header h1 {
+    font-size: 2rem;
+  }
+  
+  .info-section h2,
+  .promociones-section h2,
+  .cta-section h2 {
+    font-size: 1.6rem;
+  }
+  
+  .monto {
+    font-size: 1.8rem;
+  }
+}

@@ -1,0 +1,263 @@
+.mis-turnos-page {
+  min-height: 100vh;
+  background-color: #f7fafc;
+  padding: 40px 20px;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  color: #2d3748;
+  margin-bottom: 10px;
+}
+
+.page-header p {
+  font-size: 1.1rem;
+  color: #718096;
+}
+
+.loading {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #e2e8f0;
+  border-top: 4px solid #4299e1;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.message {
+  max-width: 1200px;
+  margin: 0 auto 30px;
+  padding: 15px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.message.success {
+  background-color: #c6f6d5;
+  border: 1px solid #9ae6b4;
+  color: #22543d;
+}
+
+.message.error {
+  background-color: #fed7d7;
+  border: 1px solid #feb2b2;
+  color: #742a2a;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+}
+
+.empty-state h2 {
+  color: #2d3748;
+  margin-bottom: 15px;
+  font-size: 1.8rem;
+}
+
+.empty-state p {
+  color: #718096;
+  margin-bottom: 30px;
+  font-size: 1.1rem;
+}
+
+.turnos-sections {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.turnos-section {
+  margin-bottom: 50px;
+}
+
+.turnos-section h2 {
+  color: #2d3748;
+  font-size: 1.8rem;
+  margin-bottom: 25px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.turnos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 25px;
+}
+
+.turno-card {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-left: 4px solid #4299e1;
+}
+
+.turno-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.turno-card.completed {
+  border-left-color: #48bb78;
+  opacity: 0.8;
+}
+
+.turno-card.cancelled {
+  border-left-color: #e53e3e;
+  opacity: 0.7;
+}
+
+.turno-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.turno-header h3 {
+  color: #2d3748;
+  font-size: 1.3rem;
+  margin: 0;
+  flex: 1;
+}
+
+.estado {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.estado-confirmado {
+  background-color: #c6f6d5;
+  color: #22543d;
+}
+
+.estado-completado {
+  background-color: #bee3f8;
+  color: #2a4365;
+}
+
+.estado-cancelado {
+  background-color: #fed7d7;
+  color: #742a2a;
+}
+
+.turno-details {
+  margin-bottom: 20px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+  color: #4a5568;
+  font-size: 1rem;
+}
+
+.detail-item .icon {
+  font-size: 1.1rem;
+  width: 20px;
+}
+
+.turno-actions {
+  padding-top: 15px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+}
+
+.btn-primary {
+  background-color: #4299e1;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #3182ce;
+  transform: translateY(-1px);
+}
+
+.btn-cancel {
+  background-color: #e53e3e;
+  color: white;
+}
+
+.btn-cancel:hover:not(:disabled) {
+  background-color: #c53030;
+}
+
+.btn-cancel:disabled {
+  background-color: #a0aec0;
+  cursor: not-allowed;
+}
+
+.cancel-info {
+  font-size: 0.85rem;
+  color: #718096;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .turnos-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .turno-card {
+    padding: 20px;
+  }
+  
+  .turno-header {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  
+  .page-header h1 {
+    font-size: 2rem;
+  }
+  
+  .turnos-section h2 {
+    font-size: 1.5rem;
+  }
+}
