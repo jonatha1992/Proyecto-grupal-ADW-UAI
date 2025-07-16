@@ -1,4 +1,7 @@
-# TurnosMed - Sistema de Gestión de Turnos Médicos
+# TurnosMed - Sistema ┌─────────────────┐    HTTP/REST    ┌─────────────────┐    SQL    ┌─────────────────┐
+│   FRONTEND      │◄───────────────►│    BACKEND      │◄─────────────►│   DATABASE      │
+│   (Cliente)     │                 │   (Servidor)    │           │    (SQLite)     │
+└─────────────────┘                 └─────────────────┘           └─────────────────┘estión de Turnos Médicos
 
 Sistema fullstack moderno para la gestión de turnos médicos con autenticación local, chatbot con inteligencia artificial y arquitectura escalable.
 
@@ -104,7 +107,7 @@ TurnosMed es una plataforma web completa que permite a los usuarios gestionar tu
 ├─────────────────────────────────────────────────────────────┤
 │                      CAPA DE DATOS                         │
 ├─────────────────────────────────────────────────────────────┤
-│ • PostgreSQL Database                                      │
+│ • SQLite Database                                          │
 │ • Pool de conexiones                                       │
 │ • Transacciones ACID                                       │
 └─────────────────────────────────────────────────────────────┘
@@ -124,7 +127,7 @@ TurnosMed es una plataforma web completa que permite a los usuarios gestionar tu
 - **Node.js**: Runtime de JavaScript para el servidor
 - **Express.js**: Framework web minimalista y flexible
 - **TypeScript**: Tipado estático en el backend
-- **PostgreSQL**: Base de datos relacional robusta
+- **SQLite**: Base de datos relacional liviana
 - **JWT (jsonwebtoken)**: Autenticación stateless
 - **bcryptjs**: Hash seguro de contraseñas
 - **express-validator**: Validación de datos de entrada
@@ -301,7 +304,7 @@ CREATE INDEX idx_turnos_fecha_hora ON turnos(fecha, hora);
 
 ### Prerrequisitos
 - Node.js (v18 o superior)
-- PostgreSQL (v12 o superior)
+- SQLite (v3 o superior)
 - npm o yarn
 
 ### Instalación y Ejecución
@@ -314,11 +317,11 @@ CREATE INDEX idx_turnos_fecha_hora ON turnos(fecha, hora);
 
 2. **Configurar Base de Datos**
    ```bash
-   # Crear base de datos PostgreSQL
-   createdb turnosmed
-   
-   # Ejecutar script de inicialización
-   psql -d turnosmed -f backend/database/init.sql
+   # Ejecutar script de inicialización SQLite
+   cd backend
+   node dist/utils/initDb.js
+   # o
+   npm run init-db
    ```
 
 3. **Backend (Node.js + Express + TypeScript)**

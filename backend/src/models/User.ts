@@ -1,10 +1,11 @@
 import { query, transaction } from '@/config/database';
 import { User, CreateUserDto, UpdateUserDto } from '@/types';
+import crypto from 'crypto';
 
 export class UserModel {
   static async findByEmail(email: string): Promise<User | null> {
     const result = await query(
-      'SELECT * FROM users WHERE email = $1',
+      'SELECT * FROM users WHERE email = ?',
       [email]
     );
     return result.rows[0] || null;
@@ -12,34 +13,35 @@ export class UserModel {
 
   static async findById(id: string): Promise<User | null> {
     const result = await query(
-      'SELECT * FROM users WHERE id = $1',
+      'SELECT * FROM users WHERE id = ?',
       [id]
     );
     return result.rows[0] || null;
   }
 
   static async create(userData: CreateUserDto): Promise<User> {
+    const uuid = crypto.randomUUID();
     const result = await query(
-      `INSERT INTO users (email, name, phone, password_hash, created_at, updated_at)
-       VALUES ($1, $2, $3, $4, NOW(), NOW())
-       RETURNING *`,
-      [userData.email, userData.name, userData.phone, userData.password_hash]
+      `INSERT INTO users (id, email, name, phone, password_hash, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, datetime('now'), datetime('now'))`,
+      [uuid, userData.email, userData.name, userData.phone, userData.password_hash]
     );
-    return result.rows[0];
+
+    // Fetch and return the created user
+    return this.findById(uuid) as Promise<User>;
   }
 
   static async update(id: string, userData: UpdateUserDto): Promise<User | null> {
     const fields = [];
     const values = [];
-    let paramCount = 1;
 
     if (userData.name !== undefined) {
-      fields.push(`name = $${paramCount++}`);
+      fields.push(`name = ?`);
       values.push(userData.name);
     }
 
     if (userData.phone !== undefined) {
-      fields.push(`phone = $${paramCount++}`);
+      fields.push(`phone = ?`);
       values.push(userData.phone);
     }
 
@@ -47,20 +49,20 @@ export class UserModel {
       throw new Error('No hay campos para actualizar');
     }
 
-    fields.push(`updated_at = NOW()`);
+    fields.push(`updated_at = datetime('now')`);
     values.push(id);
 
-    const result = await query(
-      `UPDATE users SET ${fields.join(', ')} WHERE id = $${paramCount} RETURNING *`,
-      values
+    await query(
+      `UPDATE users SET ${fields.join(', ')} WHERE id = ?`,
+      [...values, id]
     );
 
-    return result.rows[0] || null;
+    return this.findById(id);
   }
 
   static async delete(id: string): Promise<boolean> {
     const result = await query(
-      'DELETE FROM users WHERE id = $1',
+      'DELETE FROM users WHERE id = ?',
       [id]
     );
     return result.rowCount > 0;
@@ -68,7 +70,7 @@ export class UserModel {
 
   static async findAll(limit: number = 50, offset: number = 0): Promise<User[]> {
     const result = await query(
-      'SELECT * FROM users ORDER BY created_at DESC LIMIT $1 OFFSET $2',
+      'SELECT * FROM users ORDER BY created_at DESC LIMIT ? OFFSET ?',
       [limit, offset]
     );
     return result.rows;

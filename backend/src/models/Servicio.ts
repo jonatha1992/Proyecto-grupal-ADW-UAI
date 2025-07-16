@@ -1,26 +1,26 @@
 import { query } from '@/config/database';
 import { Servicio } from '@/types';
+import crypto from 'crypto';
 
 export class ServicioModel {
   static async findAll(activeOnly?: boolean, limit?: number, offset?: number): Promise<Servicio[]> {
     let queryText = 'SELECT * FROM servicios';
     const params: any[] = [];
-    let paramCount = 1;
 
     if (activeOnly !== undefined) {
-      queryText += ' WHERE activo = $' + paramCount++;
-      params.push(activeOnly);
+      queryText += ' WHERE activo = ?';
+      params.push(activeOnly ? 1 : 0);
     }
 
     queryText += ' ORDER BY nombre ASC';
 
     if (limit !== undefined) {
-      queryText += ' LIMIT $' + paramCount++;
+      queryText += ' LIMIT ?';
       params.push(limit);
     }
 
     if (offset !== undefined) {
-      queryText += ' OFFSET $' + paramCount;
+      queryText += ' OFFSET ?';
       params.push(offset);
     }
 
@@ -30,7 +30,7 @@ export class ServicioModel {
 
   static async findById(id: string): Promise<Servicio | null> {
     const result = await query(
-      'SELECT * FROM servicios WHERE id = $1',
+      'SELECT * FROM servicios WHERE id = ?',
       [id]
     );
     return result.rows[0] || null;
@@ -38,102 +38,114 @@ export class ServicioModel {
 
   static async findByName(nombre: string): Promise<Servicio | null> {
     const result = await query(
-      'SELECT * FROM servicios WHERE LOWER(nombre) = LOWER($1)',
+      'SELECT * FROM servicios WHERE LOWER(nombre) = LOWER(?)',
       [nombre]
     );
     return result.rows[0] || null;
   }
 
   static async create(servicioData: Omit<Servicio, 'id' | 'created_at' | 'updated_at'>): Promise<Servicio> {
-    const result = await query(
-      `INSERT INTO servicios (nombre, precio, duracion, descripcion, activo, created_at, updated_at)
-       VALUES ($1, $2, $3, $4, $5, NOW(), NOW())
-       RETURNING *`,
+    const uuid = crypto.randomUUID();
+
+    await query(
+      `INSERT INTO servicios (id, nombre, precio, duracion, descripcion, activo, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))`,
       [
+        uuid,
         servicioData.nombre,
         servicioData.precio,
         servicioData.duracion,
         servicioData.descripcion,
-        servicioData.activo
+        servicioData.activo ? 1 : 0
       ]
     );
-    return result.rows[0];
+
+    return this.findById(uuid) as Promise<Servicio>;
   }
 
   static async update(id: string, servicioData: Partial<Omit<Servicio, 'id' | 'created_at' | 'updated_at'>>): Promise<Servicio | null> {
     const fields = [];
     const values = [];
-    let paramCount = 1;
 
     if (servicioData.nombre !== undefined) {
-      fields.push(`nombre = $${paramCount++}`);
+      fields.push(`nombre = ?`);
       values.push(servicioData.nombre);
     }
 
     if (servicioData.precio !== undefined) {
-      fields.push(`precio = $${paramCount++}`);
+      fields.push(`precio = ?`);
       values.push(servicioData.precio);
     }
 
     if (servicioData.duracion !== undefined) {
-      fields.push(`duracion = $${paramCount++}`);
+      fields.push(`duracion = ?`);
       values.push(servicioData.duracion);
     }
 
     if (servicioData.descripcion !== undefined) {
-      fields.push(`descripcion = $${paramCount++}`);
+      fields.push(`descripcion = ?`);
       values.push(servicioData.descripcion);
     }
 
     if (servicioData.activo !== undefined) {
-      fields.push(`activo = $${paramCount++}`);
-      values.push(servicioData.activo);
+      fields.push(`activo = ?`);
+      values.push(servicioData.activo ? 1 : 0);
     }
 
     if (fields.length === 0) {
       throw new Error('No hay campos para actualizar');
     }
 
-    fields.push(`updated_at = NOW()`);
-    values.push(id);
+    fields.push(`updated_at = datetime('now')`);
 
-    const result = await query(
-      `UPDATE servicios SET ${fields.join(', ')} WHERE id = $${paramCount} RETURNING *`,
-      values
+    await query(
+      `UPDATE servicios SET ${fields.join(', ')} WHERE id = ?`,
+      [...values, id]
     );
 
-    return result.rows[0] || null;
+    return this.findById(id);
   }
 
   static async delete(id: string): Promise<boolean> {
     const result = await query(
-      'DELETE FROM servicios WHERE id = $1',
+      'DELETE FROM servicios WHERE id = ?',
       [id]
     );
     return result.rowCount > 0;
   }
 
   static async toggleActive(id: string): Promise<Servicio | null> {
-    const result = await query(
+    // En SQLite no tenemos operador NOT directo como en PostgreSQL
+    // Primero obtenemos el servicio
+    const servicio = await this.findById(id);
+
+    if (!servicio) {
+      return null;
+    }
+
+    // Luego invertimos su estado
+    const nuevoEstado = servicio.activo ? 0 : 1;
+
+    await query(
       `UPDATE servicios 
-       SET activo = NOT activo, updated_at = NOW() 
-       WHERE id = $1 
-       RETURNING *`,
-      [id]
+       SET activo = ?, updated_at = datetime('now') 
+       WHERE id = ?`,
+      [nuevoEstado, id]
     );
-    return result.rows[0] || null;
+
+    return this.findById(id);
   }
 
   static async findActive(): Promise<Servicio[]> {
     const result = await query(
-      'SELECT * FROM servicios WHERE activo = true ORDER BY nombre ASC'
+      'SELECT * FROM servicios WHERE activo = 1 ORDER BY nombre ASC'
     );
     return result.rows;
   }
 
   static async findByPriceRange(minPrice: number, maxPrice: number): Promise<Servicio[]> {
     const result = await query(
-      'SELECT * FROM servicios WHERE precio >= $1 AND precio <= $2 AND activo = true ORDER BY precio ASC',
+      'SELECT * FROM servicios WHERE precio >= ? AND precio <= ? AND activo = 1 ORDER BY precio ASC',
       [minPrice, maxPrice]
     );
     return result.rows;
@@ -144,13 +156,11 @@ export class ServicioModel {
     const params: any[] = [];
 
     if (activeOnly !== undefined) {
-      queryText += ' WHERE activo = $1';
-      params.push(activeOnly);
+      queryText += ' WHERE activo = ?';
+      params.push(activeOnly ? 1 : 0);
     }
 
     const result = await query(queryText, params);
     return parseInt(result.rows[0].total);
   }
-
-  // Método eliminado - ya está definido arriba
 }

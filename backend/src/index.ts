@@ -4,6 +4,8 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import compression from 'compression';
 import dotenv from 'dotenv';
+import fs from 'fs';
+import path from 'path';
 import { connectDatabase } from '@/config/database';
 import routes from '@/routes';
 import { errorHandler } from '@/middlewares/errorHandler';
@@ -44,6 +46,16 @@ app.use(errorHandler);
 async function startServer() {
   try {
     console.log('🔌 Conectando a la base de datos...');
+
+    // Verificar si existe el archivo de la base de datos
+    const dbPath = path.join(__dirname, '../database/turnosmed.sqlite');
+
+    // Siempre inicializar la base de datos para asegurarnos que todas las tablas existan
+    console.log('💾 Inicializando base de datos SQLite...');
+    // Importar e inicializar la base de datos
+    const initDb = await import('./utils/initDb');
+    await initDb.default;
+
     await connectDatabase();
     console.log('✅ Base de datos conectada exitosamente');
 

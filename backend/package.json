@@ -5,26 +5,29 @@
   "main": "dist/index.js",
   "scripts": {
     "start": "node dist/index.js",
-    "dev": "nodemon src/index.ts",
+    "dev": "nodemon --exec ts-node -r tsconfig-paths/register src/index.ts",
     "build": "tsc",
     "build:watch": "tsc -w",
     "postinstall": "npm run build",
     "lint": "eslint src/**/*.ts",
-    "lint:fix": "eslint src/**/*.ts --fix"
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "init-db": "ts-node -r tsconfig-paths/register src/utils/initDb.ts"
   },
   "keywords": [
     "api",
     "express",
     "typescript",
-    "postgresql",
+    "sqlite",
     "turnos",
     "medicos"
   ],
   "author": "TurnosMed Team",
   "license": "MIT",
   "dependencies": {
+    "@types/sqlite3": "^5.1.0",
     "axios": "^1.10.0",
     "bcryptjs": "^3.0.2",
+    "better-sqlite3": "^12.2.0",
     "compression": "^1.8.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.0",
@@ -34,7 +37,7 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "openai": "^5.9.0",
-    "pg": "^8.16.3"
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
@@ -44,7 +47,6 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/morgan": "^1.9.10",
     "@types/node": "^24.0.13",
-    "@types/pg": "^8.15.4",
     "@typescript-eslint/eslint-plugin": "^8.37.0",
     "@typescript-eslint/parser": "^8.37.0",
     "eslint": "^9.31.0",
