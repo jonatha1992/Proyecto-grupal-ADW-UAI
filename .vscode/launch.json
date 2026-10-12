@@ -1,0 +1,28 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "TurnosMed API (F5)",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "cwd": "${workspaceFolder}/backend",
+      "console": "integratedTerminal",
+      "runtimeArgs": ["run", "dev"],
+      "envFile": "${workspaceFolder}/backend/.env"
+    },
+    {
+      "name": "TurnosMed Frontend: Vite (F5)",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--", "--host", "127.0.0.1"],
+      "cwd": "${workspaceFolder}/frontend",
+      "console": "integratedTerminal"
+    }
+  ],
+  "compounds": [
+    { "name": "TurnosMed Full Stack", "configurations": ["TurnosMed API (F5)", "TurnosMed Frontend: Vite (F5)"] }
+  ]
+}

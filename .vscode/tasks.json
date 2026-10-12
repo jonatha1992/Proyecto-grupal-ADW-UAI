@@ -1,0 +1,12 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    { "label": "install backend", "type": "shell", "command": "npm install", "options": { "cwd": "${workspaceFolder}/backend" }, "problemMatcher": [] },
+    { "label": "build backend", "type": "shell", "command": "npm run build", "options": { "cwd": "${workspaceFolder}/backend" }, "problemMatcher": "$tsc", "group": "build" },
+    { "label": "run backend", "type": "shell", "command": "npm run dev", "options": { "cwd": "${workspaceFolder}/backend" }, "isBackground": true, "problemMatcher": [] },
+    { "label": "install frontend", "type": "shell", "command": "npm install", "options": { "cwd": "${workspaceFolder}/frontend" }, "problemMatcher": [] },
+    { "label": "run frontend", "type": "shell", "command": "npm run dev", "options": { "cwd": "${workspaceFolder}/frontend" }, "isBackground": true, "problemMatcher": [] },
+    { "label": "install all", "dependsOrder": "sequence", "dependsOn": ["install backend", "install frontend"], "problemMatcher": [] },
+    { "label": "test backend build", "dependsOn": "build backend", "problemMatcher": [], "group": "test" }
+  ]
+}
